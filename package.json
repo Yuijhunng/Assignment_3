@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "aframe-super-shooter-kit": "^1.1.7",
     "express": "^4.16.4",
     "socket.io": "^2.2.0"
   },

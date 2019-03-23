@@ -1,34 +1,79 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
+  <head>
+    <title>codevember </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    
 
-    </head>
-    <body>
-        <h1>This is the color client</h1>
-
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
-
-
-
-        <a-scene>
-            <a-box id="box" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-            <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-            <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-            <a-sky color="#ECECEC"></a-sky>
-
-            <a-entity environment="preset: forest; groundColor: #445; grid: cross; skyType:atmosphere; groundYScale: 5; fog: 0.94"></a-entity>
-
-          </a-scene>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.rawgit.com/feiss/aframe-environment-component/ad57b15d/dist/aframe-environment-component.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v2.1.0/dist/aframe-physics-system.min.js"></script>
+  </head>
+  <body>
 
 
+    <a-scene physics>
+
+            <a-camera >
+                    <a-entity id="cameraPos" position="0 3 -2 "camera look-controls wasd-controls>
+                            <a-entity  
+                            cursor="fuse:true; fuseTimeout:500;"
+                            rayOrigin:mouse;
+                            position="0 0 -1"
+                            geometry="primitive:ring; radiusInner:0.015; radiusOuter:0.02;"
+                            material="shader:flat; color:white;" >
+                            </a-entity>
+                            <a-entity id="gun" sound="src: #sfx-gun; autoplay: false;" obj-model="obj: #gun-obj; mtl: #gun-mtl" position="0 -0.5 -1" shadow rotation="0 90 0"></a-entity> 
+
+                        </a-entity>  </a-camera>
+                
+      <a-assets>      
+        <a-asset-item id="gun-obj" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Fgun-1NI7Q2_vScX-model.obj?1510641419352"></a-asset-item>
+        <a-asset-item id="gun-mtl" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Fgun-1NI7Q2_vScX-materials.mtl?1510641419027"></a-asset-item>
+        <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
+        <img id="orangesrc" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ff7d31bc38804a89a6b288f718296cc27.jpg?1510638410703" crossorigin="anonymous" /> 
+        <img id="orangebump" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Forangebump1.jpg?1510639083481" crossorigin="anonymous" /> 
+      </a-assets>
+      <a-entity environment="preset: forest;  groundYScale: 5; fog: 0.94"></a-entity>
+
+      <a-entity id="orange" dynamic-body velocity="0 0 -10" geometry="primitive: sphere; radius: 0.1" position="0 3 100.2" material="src: #orangesrc; roughness: 0.48; color: #edaa45;" shadow="cast:true;receive:true"></a-entity>
+
+           
+      <!-- Physics terrain -->
+      <a-box width="75" height="0.1" depth="75" position="0 -0.05 0" static-body visible="false"></a-box>
+      <!-- Blocks row 1 -->
+      <a-box id= "box" position="0 0.5 -4" color="#a50026" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 0.5 -4" color="#d73027" dynamic-body force-pushable shadow></a-box>
+      <a-box position="0 1.5 -4" color="#fee08b" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 1.5 -4" color="#ffffbf" dynamic-body force-pushable shadow></a-box>
+      <a-box position="0 2.5 -4" color="#a50026" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 2.5 -4" color="#66bd63" dynamic-body force-pushable shadow></a-box>
+      <!-- Blocks row 2 -->
+      <a-box position="0 0.5 -8" color="#f46d43" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 0.5 -8" color="#fdae61" dynamic-body force-pushable shadow></a-box>
+      <a-box position="0 1.5 -8" color="#d9ef8b" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 1.5 -8" color="#a6d96a" dynamic-body force-pushable shadow></a-box>
+      <a-box position="0 2.5 -8" color="#1a9850" dynamic-body force-pushable shadow></a-box>
+      <a-box position="1 2.5 -8" color="#006837" dynamic-body force-pushable shadow></a-box>
+    </a-scene>
+  </body>
+  <script>
+    window.addEventListener('click', function () {
+    //   document.querySelector("#orange").body.position.set(0, 3, -2);
+      document.querySelector("#orange").body.velocity.set(0, 0, -12);
+      document.querySelector("#gun").components.sound.playSound();
+    });    
+  </script>
 
 
         <script>
             let socket = io();
             let BOX = document.getElementById("box");
 
+   
             //default connect event
             socket.on('connect', function() {
                 console.log("connected!");
@@ -36,15 +81,14 @@
 
             socket.on('color_change', function(data) {
                 //create rgb color string for css
-                let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
-                console.log("color received: " + colorStr);
+                
+                // var pos = document.querySelector('#camera').getAttribute('position');
 
-                //set background color with received color
-                // document.body.style.backgroundColor = colorStr;
-                BOX.setAttribute('material', 'color', colorStr);
+                
+                let orange = document.querySelector("#orange").body.position.set(0, 1.7, -2);
 
 
             });
-        </script>
-    </body>
+        </script> 
+
 </html>
